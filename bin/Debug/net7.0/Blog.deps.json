@@ -11,7 +11,8 @@
           "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "7.0.5",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "7.0.5",
           "Microsoft.EntityFrameworkCore.Design": "7.0.5",
-          "MySql.EntityFrameworkCore": "7.0.2"
+          "MySql.EntityFrameworkCore": "7.0.2",
+          "MySqlConnector": "2.2.6"
         },
         "runtime": {
           "Blog.dll": {}
@@ -329,6 +330,14 @@
           "lib/net7.0/MySql.EntityFrameworkCore.dll": {
             "assemblyVersion": "7.0.2.0",
             "fileVersion": "7.0.2.0"
+          }
+        }
+      },
+      "MySqlConnector/2.2.6": {
+        "runtime": {
+          "lib/net7.0/MySqlConnector.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.2.6.0"
           }
         }
       },
@@ -737,6 +746,13 @@
       "sha512": "sha512-ySIsMm7VqZTc685eGT9FAMkS73qbRwx80L/3/cAsnfTOqRNQc+pBj8OO9k275wBfcE2DRJTgPC5LJcPF/58KMw==",
       "path": "mysql.entityframeworkcore/7.0.2",
       "hashPath": "mysql.entityframeworkcore.7.0.2.nupkg.sha512"
+    },
+    "MySqlConnector/2.2.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-oYHl9TNhJXBEqfuiaEsOdBPkdULOcCCbqZJzYhy0rtREnMVoluG73GM8+gwBCMb1vbjv9K1ehQnhe0cxdxfOCA==",
+      "path": "mysqlconnector/2.2.6",
+      "hashPath": "mysqlconnector.2.2.6.nupkg.sha512"
     },
     "Portable.BouncyCastle/1.9.0": {
       "type": "package",

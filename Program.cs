@@ -3,6 +3,9 @@ using Blog.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,10 +25,35 @@ builder.Services.AddAuthentication(options =>
         options.AccessDeniedPath = "/Account/AccessDenied";
     });
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseMySQL("Server=localhost;Database=blog;Uid=root;Pwd=password;"));           
+            options.UseMySQL("Server=localhost;Database=blog;Uid=root;Pwd=password;"));  
+builder.Services.AddDbContext<BlogDbContext>(options =>
+            options.UseMySQL("Server=localhost;Database=blog;Uid=root;Pwd=password;"));               
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
+using (var serviceProvider = builder.Services.BuildServiceProvider())
+{
+    var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>(); 
+    
+    if (!roleManager.RoleExistsAsync("Admin").Result)
+        {
+            var adminRole = new IdentityRole("Admin");
+            var result = roleManager.CreateAsync(adminRole).Result;
+        }
+
+        if (!roleManager.RoleExistsAsync("User").Result)
+        {
+            var userRole = new IdentityRole("User");
+            var result = roleManager.CreateAsync(userRole).Result;
+        }
+}
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("UserAndAdmin", policy =>
+        policy.RequireRole("User", "Admin"));
+});
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -52,6 +80,12 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+);
+app.MapControllerRoute(
+    name: "blog",
+    pattern: "Blog/{action=Index}/{id?}",
+    defaults: new { controller = "Blog" }
+);
 
 app.Run();
